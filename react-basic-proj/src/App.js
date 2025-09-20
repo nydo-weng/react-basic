@@ -27,6 +27,17 @@ function App() {
   4. 使用 JavaScript 对象
   注意, 只能使用表达式, 不能使用语句, if, switch, 变量声明都属于语句, 不是表达式 不等出现在 {} 中.
   */
+
+  /* 在 JSX 中实现列表渲染 
+  语法: 在 JSX 中可以使用原生 JS 中的 map 方法 遍历渲染列表
+  */
+
+  const list = [
+    { id: 1001, name: "vue" },
+    { id: 1002, name: "react" },
+    { id: 1003, name: "angular" },
+  ];
+
   return (
     <div className="App">
       this is App
@@ -40,6 +51,15 @@ function App() {
       {new Date().getDate()}
       {/* 4. 使用 JavaScript 对象 */}
       <div style={{ color: "red" }}>this is div</div>
+      {/* JSX 中使用原生 JS 中的 map 方法遍历渲染列表 
+      在 React 遍历渲染 List 时, 每个 key 属性都是必须的, 绑定一个独一无二的 id, 这样在列表渲染时, 可以快速定位到列表中的元素.
+      主要是给 React 内部使用的一个标识, 提升渲染性能.
+      */}
+      <ul>
+        {list.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
