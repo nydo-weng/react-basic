@@ -94,6 +94,25 @@ function App() {
 
   const [count, setCount] = useState(0);
 
+  /* 状态不可变 
+  在 React 中, 状态被认为是只读的, 我们应该始终替换它而不是修改它, 直接修改状态不能引发视图的更新
+  always 调用 setXXX 来修改状态, 这在内部会用新的替代旧的,
+  不能直接修改状态变量, XXX++, 这个确实能修改变量, 可以打印在控制台, 但是这种直接修改无法引发视图更新, 必须调用 setXXX 来修改状态.
+  */
+
+  /* 修改对象状态 
+  规则: 对于对象类型的状态变量, 应该始终传递给 setXXX 方法一个 *全新的对象* 来进行修改
+  */
+
+  /* 这样修改是不可以的, 因为直接修改源对象, 所以不会引发视图的变化 */
+  /* const [form, setFrom] = useState({name: "jack"});
+  const handleChange = () => {form.name = "john"}; */
+
+  /* 这样修改是可以的, 因为传递给 setXXX 方法一个 *全新的对象* 来进行修改, 通过展开运算符 ... 来实现, 展开对象的所有字段, 需要修改就直接写, 如果有一样的字段, 新的值就会覆盖旧的值 */
+  /* const handleChange = () => {
+    setFrom({...form, name: "john"});
+  } */
+
   return (
     <div className="App">
       this is App
