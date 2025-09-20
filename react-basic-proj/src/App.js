@@ -1,4 +1,4 @@
-import { useState, useRef, createContext, useContext } from "react";
+import { useState, useRef, createContext, useContext, useEffect } from "react";
 import "./index.css";
 
 // 项目的根组件
@@ -34,7 +34,11 @@ function A() {
 function B() {
   const bBlock = useContext(MsgContext);
   const bMsg = "this is b message";
-  bBlock.setBMsg(bMsg);
+
+  useEffect(() => {
+    bBlock.setBMsg(bMsg);
+  }, [bBlock, bMsg]);
+
   return <div>this is B component: {bBlock.msg}</div>;
 }
 
@@ -158,8 +162,26 @@ function App() {
   const [bMsg, setBMsg] = useState("");
   const bBlock = { msg: msg, setBMsg: setBMsg };
 
+  const URL = "http://geek.itheima.net/v1_0/channels";
+  const [clist, setCList] = useState([]);
+
+  useEffect(() => {
+    // 额外操作, 这里是获取频道列表
+    async function getList() {
+      const res = await fetch(URL);
+      const list = await res.json();
+      setCList(list.data.channels);
+    }
+    getList();
+  }, []);
+
   return (
     <div className="App">
+      <ul>
+        {clist.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
       <MsgContext.Provider value={bBlock}>
         this is App {bMsg}
         <A />
