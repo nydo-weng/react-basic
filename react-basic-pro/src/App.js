@@ -1,6 +1,7 @@
 import "./App.scss";
 import avatar from "./images/bozai.png";
 import { useState } from "react";
+import _ from "lodash";
 /**
  * 评论列表的渲染和操作
  *
@@ -36,7 +37,7 @@ const defaultList = [
     },
     content: "我寻你千百度 日出到迟暮",
     ctime: "11-13 11:29",
-    like: 88,
+    like: 126,
   },
   {
     rpid: 1,
@@ -76,7 +77,9 @@ const tabs = [
 ];
 
 const App = () => {
-  const [commentList, setCommentList] = useState(defaultList);
+  const [commentList, setCommentList] = useState(
+    _.orderBy(defaultList, "like", "desc")
+  );
 
   const handleDelete = (rpid) => {
     setCommentList(commentList.filter((item) => item.rpid !== rpid));
@@ -88,6 +91,16 @@ const App = () => {
   const [type, setType] = useState("hot");
   const handleTabChange = (type) => {
     setType(type);
+
+    // 基于列表的排序
+    if (type === "hot") {
+      // 根据点赞数排序
+      // lodash 是一个封装好的工具库, 借助他快速给数据做排序, 并且生成一个新的数组
+      setCommentList(_.orderBy(commentList, "like", "desc"));
+    } else {
+      // 根据创建时间排序
+      setCommentList(_.orderBy(commentList, "ctime", "desc"));
+    }
   };
 
   return (
