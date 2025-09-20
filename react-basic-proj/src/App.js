@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./index.css";
 
 // 项目的根组件
 // App -> index.js -> public/index.html(root)
@@ -113,6 +114,11 @@ function App() {
     setFrom({...form, name: "john"});
   } */
 
+  /* 组件基础样式方案
+  1. 行内样式 不推荐
+  2. class 类名控制, 在 JSX 中, 不能使用 class, 要使用 className 来控制
+  */
+
   return (
     <div className="App">
       this is App
@@ -142,6 +148,7 @@ function App() {
       <Button></Button>
       {/* 回调函数的作用, 1. 用传入的新值修改 count, 2. 重新使用新的 count 渲染 UI */}
       <button onClick={() => setCount(count + 1)}>我是计数器: {count}</button>
+      <span className="foo">this is span</span>
     </div>
   );
 }
