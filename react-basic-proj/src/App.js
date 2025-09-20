@@ -38,6 +38,31 @@ function App() {
     { id: 1003, name: "angular" },
   ];
 
+  /* 在 JSX 中实现 条件渲染 
+  语法中:
+  1. 通过 逻辑与 运算符
+  {flag && <span>this is span</span>}
+  2. 三元表达式 (?:)
+  {loading ? <span>loading...</span> : <span>this is span</span>}
+  
+  复杂情况条件渲染
+  解决方案: 自定义函数 + if 判断语句
+  */
+
+  // 定义文章类型
+  const articleType = 3; // 0 1 3 代表无图, 单图, 三图
+
+  // 定义核心函数 根据文章类型返回不同的 JSX 模版
+  function getArticleTemp() {
+    if (articleType === 0) {
+      return <div>无图</div>;
+    } else if (articleType === 1) {
+      return <div>单图</div>;
+    } else if (articleType === 3) {
+      return <div>三图</div>;
+    }
+  }
+
   return (
     <div className="App">
       this is App
@@ -60,6 +85,7 @@ function App() {
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
+      {getArticleTemp()}
     </div>
   );
 }
