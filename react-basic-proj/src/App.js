@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // 项目的根组件
 // App -> index.js -> public/index.html(root)
 
@@ -85,6 +87,13 @@ function App() {
   可以用自闭和或者闭合标签来书写组件
   */
 
+  /* UseState基础使用
+  useState 是一个 Reack Hook 函数, 它允许我们想组件添加一个 *状态变量*, 从而控制影响组件的渲染结果
+  本质: 和普通 JS 变量不同的是, 状态变量一旦发生变化, 组件的视图 UI 也会跟着发生变化 *数据驱动视图*
+  */
+
+  const [count, setCount] = useState(0);
+
   return (
     <div className="App">
       this is App
@@ -112,6 +121,8 @@ function App() {
       {/* 渲染自定义组件 */}
       <Button />
       <Button></Button>
+      {/* 回调函数的作用, 1. 用传入的新值修改 count, 2. 重新使用新的 count 渲染 UI */}
+      <button onClick={() => setCount(count + 1)}>我是计数器: {count}</button>
     </div>
   );
 }
