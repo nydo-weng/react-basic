@@ -20,6 +20,7 @@ const Button = () => {
 };
 
 const MsgContext = createContext();
+const GetBMsgContext = createContext();
 
 function A() {
   return (
@@ -31,8 +32,10 @@ function A() {
 }
 
 function B() {
-  const msg = useContext(MsgContext);
-  return <div>this is B component: {msg}</div>;
+  const bBlock = useContext(MsgContext);
+  const bMsg = "this is b message";
+  bBlock.setBMsg(bMsg);
+  return <div>this is B component: {bBlock.msg}</div>;
 }
 
 function App() {
@@ -152,11 +155,13 @@ function App() {
   const inputRef = useRef(null);
 
   const msg = "this is message";
+  const [bMsg, setBMsg] = useState("");
+  const bBlock = { msg: msg, setBMsg: setBMsg };
 
   return (
     <div className="App">
-      <MsgContext.Provider value={msg}>
-        this is App
+      <MsgContext.Provider value={bBlock}>
+        this is App {bMsg}
         <A />
       </MsgContext.Provider>
 
