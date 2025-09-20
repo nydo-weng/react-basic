@@ -63,6 +63,10 @@ function App() {
     }
   }
 
+  const handleClick = (name, e) => {
+    console.log("button clicked", name, e);
+  };
+
   return (
     <div className="App">
       this is App
@@ -86,6 +90,7 @@ function App() {
         ))}
       </ul>
       {getArticleTemp()}
+      <button onClick={(e) => handleClick("myname", e)}>click me</button>
     </div>
   );
 }
