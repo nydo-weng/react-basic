@@ -119,6 +119,15 @@ function App() {
   2. class 类名控制, 在 JSX 中, 不能使用 class, 要使用 className 来控制
   */
 
+  /* 受控表单
+  1. 声明一个 react 状态 - useState
+  2. 核心绑定流程
+    1. 通过 value 属性绑定 react 状态
+    2. 绑定 onChange 事件, 通过事件参数 e 拿到输入框最新的值, 反向修改到 react 状态
+  */
+
+  const [value, setValue] = useState("");
+
   return (
     <div className="App">
       this is App
@@ -149,6 +158,11 @@ function App() {
       {/* 回调函数的作用, 1. 用传入的新值修改 count, 2. 重新使用新的 count 渲染 UI */}
       <button onClick={() => setCount(count + 1)}>我是计数器: {count}</button>
       <span className="foo">this is span</span>
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        type="text"
+      ></input>
     </div>
   );
 }
