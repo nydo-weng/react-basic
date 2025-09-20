@@ -7,6 +7,15 @@ function getName() {
   return "jack";
 }
 
+/* function Button() {
+  // 业务逻辑
+  return <button>click me button 组件</button>;
+} */
+// 上面这个可以写成箭头函数
+const Button = () => {
+  return <button>click me button 组件</button>;
+};
+
 function App() {
   /* JSX 简介
   这是一个典型的 JSX, JSX 是 JavaScript 和 XML(HTML) 的缩写, 表示在 JS 代码中编写 HTML 模版结构, 是 React 中编写 UI 模版的方式.
@@ -67,6 +76,15 @@ function App() {
     console.log("button clicked", name, e);
   };
 
+  /* 组件是什么?
+  这是通用概念, 不挑框架
+  概念: 一个组件就是用户界面的一部分, 它可以有自己的逻辑和外观, 组件之间可以相互嵌套, 也可以复用多次
+  组件化开发可以让开发者像搭积木一样构建一个完整的庞大的应用
+
+  React 组件, 就是首字母大写的函数, 内部存放了组件的逻辑和视图 UI, 渲染组件只需要把组件当成标签书写即可
+  可以用自闭和或者闭合标签来书写组件
+  */
+
   return (
     <div className="App">
       this is App
@@ -91,6 +109,9 @@ function App() {
       </ul>
       {getArticleTemp()}
       <button onClick={(e) => handleClick("myname", e)}>click me</button>
+      {/* 渲染自定义组件 */}
+      <Button />
+      <Button></Button>
     </div>
   );
 }
