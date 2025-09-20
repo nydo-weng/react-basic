@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./index.css";
 
 // 项目的根组件
@@ -128,6 +128,13 @@ function App() {
 
   const [value, setValue] = useState("");
 
+  /* React 中 获取 DOM
+  1. useRef 生成 ref 对象, 绑定到 dom 标签身上
+  2. dom 可用时, ref.current 获取 dom
+  */
+
+  const inputRef = useRef(null);
+
   return (
     <div className="App">
       this is App
@@ -162,7 +169,9 @@ function App() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         type="text"
+        ref={inputRef}
       ></input>
+      <button onClick={() => console.log(inputRef.current)}>获取 dom</button>
     </div>
   );
 }
