@@ -87,7 +87,7 @@ const App = () => {
   };
 
   // tab 切换功能
-  // 1. 点击谁记录他的 type
+  // 1. 点击谁 记录他的 type
   // 2. 通过记录的 type 和每一项遍历是的 type 做匹配, 控制类名的显示
   const [type, setType] = useState("hot");
   const handleTabChange = (type) => {
@@ -102,6 +102,23 @@ const App = () => {
       // 根据创建时间排序
       setCommentList(_.orderBy(commentList, "ctime", "desc"));
     }
+  };
+
+  const [content, setContent] = useState("");
+
+  const handlePublish = () => {
+    setCommentList([
+      ...commentList,
+      {
+        rpid: commentList.length + 1,
+        user: user,
+        content: content,
+        ctime: new Date().toLocaleString(),
+        like: 0,
+      },
+    ]);
+    // 发表后清空评论框
+    setContent("");
   };
 
   return (
@@ -146,10 +163,14 @@ const App = () => {
             <textarea
               className="reply-box-textarea"
               placeholder="发一条友善的评论"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
             />
             {/* 发布按钮 */}
             <div className="reply-box-send">
-              <div className="send-text">发布</div>
+              <div className="send-text" onClick={handlePublish}>
+                发布
+              </div>
             </div>
           </div>
         </div>
