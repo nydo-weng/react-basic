@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, createContext, useContext } from "react";
 import "./index.css";
 
 // 项目的根组件
@@ -18,6 +18,22 @@ function getName() {
 const Button = () => {
   return <button>click me button 组件</button>;
 };
+
+const MsgContext = createContext();
+
+function A() {
+  return (
+    <div>
+      this is A component
+      <B />
+    </div>
+  );
+}
+
+function B() {
+  const msg = useContext(MsgContext);
+  return <div>this is B component: {msg}</div>;
+}
 
 function App() {
   /* JSX 简介
@@ -135,9 +151,15 @@ function App() {
 
   const inputRef = useRef(null);
 
+  const msg = "this is message";
+
   return (
     <div className="App">
-      this is App
+      <MsgContext.Provider value={msg}>
+        this is App
+        <A />
+      </MsgContext.Provider>
+
       {/* 1. 使用引号传递字符串 */}
       {"this is message"}
       {/* 2. 使用 JavaScript 变量 */}
