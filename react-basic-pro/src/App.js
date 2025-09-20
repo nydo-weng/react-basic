@@ -2,6 +2,7 @@ import "./App.scss";
 import avatar from "./images/bozai.png";
 import { useState } from "react";
 import _ from "lodash";
+import classNames from "classnames";
 /**
  * 评论列表的渲染和操作
  *
@@ -117,7 +118,10 @@ const App = () => {
             {/* 高亮类名： active */}
             {tabs.map((item) => (
               <span
-                className={`nav-item ${type === item.type ? "active" : ""}`}
+                // 使用 classNames 动态控制类名, 第二个类名就是 active, 当 type === item.type 时, 添加 active 类名
+                className={classNames("nav-item", {
+                  active: type === item.type,
+                })}
                 key={item.type}
                 onClick={() => handleTabChange(item.type)}
               >
