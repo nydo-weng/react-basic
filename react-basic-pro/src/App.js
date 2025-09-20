@@ -5,6 +5,7 @@ import _ from "lodash";
 import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import { useRef } from "react";
 /**
  * 评论列表的渲染和操作
  *
@@ -108,6 +109,8 @@ const App = () => {
 
   const [content, setContent] = useState("");
 
+  const textareaRef = useRef(null);
+
   const handlePublish = () => {
     setCommentList([
       ...commentList,
@@ -121,6 +124,8 @@ const App = () => {
     ]);
     // 发表后清空评论框
     setContent("");
+    // 重新聚焦 dom - focus
+    textareaRef.current.focus();
   };
 
   return (
@@ -167,6 +172,7 @@ const App = () => {
               placeholder="发一条友善的评论"
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              ref={textareaRef}
             />
             {/* 发布按钮 */}
             <div className="reply-box-send">
