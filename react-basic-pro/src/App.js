@@ -16,7 +16,8 @@ const defaultList = [
     // 用户信息
     user: {
       uid: "13258165",
-      avatar: "",
+      avatar:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIqDqIqdyQxnYeRa-L5muAwwUNb_iGAzNVTw&s",
       uname: "周杰伦",
     },
     // 评论内容
@@ -29,7 +30,8 @@ const defaultList = [
     rpid: 2,
     user: {
       uid: "36080105",
-      avatar: "",
+      avatar:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIqDqIqdyQxnYeRa-L5muAwwUNb_iGAzNVTw&s",
       uname: "许嵩",
     },
     content: "我寻你千百度 日出到迟暮",
@@ -75,6 +77,10 @@ const tabs = [
 
 const App = () => {
   const [commentList, setCommentList] = useState(defaultList);
+
+  const handleDelete = (rpid) => {
+    setCommentList(commentList.filter((item) => item.rpid !== rpid));
+  };
 
   return (
     <div className="app">
@@ -144,7 +150,14 @@ const App = () => {
                     <span className="reply-time">{item.ctime}</span>
                     {/* 评论数量 */}
                     <span className="reply-time">点赞数:{item.like}</span>
-                    <span className="delete-btn">删除</span>
+                    {user.uid === item.user.uid && (
+                      <span
+                        className="delete-btn"
+                        onClick={() => handleDelete(item.rpid)}
+                      >
+                        删除
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
