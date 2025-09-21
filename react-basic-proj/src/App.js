@@ -61,6 +61,18 @@ function Son() {
   return <div>this is son</div>;
 }
 
+function useToggle() {
+  // 可复用逻辑代码
+  const [hookExample, setHookExample] = useState(true);
+  const toggle = () => setHookExample(!hookExample);
+
+  // 哪些状态和回调函数需要再其他组件中使用 return
+  return {
+    hookExample,
+    toggle,
+  };
+}
+
 function App() {
   /* JSX 简介
   这是一个典型的 JSX, JSX 是 JavaScript 和 XML(HTML) 的缩写, 表示在 JS 代码中编写 HTML 模版结构, 是 React 中编写 UI 模版的方式.
@@ -212,10 +224,26 @@ function App() {
   // 通过条件渲染模拟组件卸载
   const [show, setShow] = useState(true);
 
+  // const [hookExample, setHookExample] = useState(true);
+  // const toggle = () => setHookExample(!hookExample);
+
+  const { hookExample, toggle } = useToggle();
+  const { hookExample2, toggle2 } = useToggle();
+
   return (
     <div className="App">
-      {show && <Son />}
-      <button onClick={() => setShow(!show)}>卸载son组件</button>
+      {hookExample && <div>this is hook example</div>}
+      <button onClick={toggle}>
+        {hookExample ? "卸载" : "渲染"}hookExample组件
+      </button>
+
+      {hookExample2 && <div>this is hook example2222</div>}
+      <button onClick={toggle2}>
+        {hookExample2 ? "卸载" : "渲染"}hookExample2组件
+      </button>
+
+      {/* {show && <Son />} */}
+      <button onClick={() => setShow(!show)}>son组件</button>
 
       <ul>
         {clist.map((item) => (
