@@ -1,0 +1,59 @@
+<div style="margin-top: 100px"></div>
+<button id="decrement">-</button>
+<span id="count">0</span>
+<button id="increment">+</button>
+
+<!-- 引入最新的 Redux 库 -->
+<script src="https://unpkg.com/redux@4.2.1/dist/redux.min.js"></script>
+
+<script>
+  // 检查 Redux 是否加载成功
+  if (typeof Redux === "undefined") {
+    console.error("Redux 库未加载成功，请检查网络连接或 CDN 链接");
+    alert("Redux 库加载失败，请检查网络连接");
+  }
+
+  // 1. 定义reducer函数
+  // 作用: 根据不同的action对象，返回不同的新的state
+  // state = {count: 0 } 管理的数据 初始状态
+  // action: 对象, 有个 type 标记, 表示想做什么样的更改
+  // 根据 action 的值, 返回一个修改后的新的 状态
+  function reducer(state = { count: 0 }, action) {
+    // 数据不可变, 基于原始状态, 生成一个新的状态返回, 不能直接在原始状态上修改
+    if (action.type === "INCREMENT") {
+      return { count: state.count + 1 };
+    }
+    if (action.type === "DECREMENT") {
+      return { count: state.count - 1 };
+    }
+    return state;
+  }
+
+  // 2. 使用reducer函数生成store实例
+  const store = Redux.createStore(reducer);
+
+  // 3. 通过store实例的subscribe订阅数据变化
+  // 回调函数可以在每次 state 发生变化的时候自动执行
+  store.subscribe(() => {
+    console.log("state 变化了", store.getState());
+    // 通过 store.getState() 获取最新的状态, 渲染到视图中
+    document.getElementById("count").innerText = store.getState().count;
+  });
+
+  // 在 redux 中, 有且只有一种修改状态的方法, 就是 dispatch
+
+  // 4. 通过store实例的dispatch函数提交action更改状态
+  const inBtn = document.getElementById("increment");
+  inBtn.addEventListener("click", () => {
+    // 增
+    store.dispatch({ type: "INCREMENT" });
+  });
+
+  const dBtn = document.getElementById("decrement");
+  dBtn.addEventListener("click", () => {
+    // 减
+    store.dispatch({ type: "DECREMENT" });
+  });
+
+  // 5. 通过store实例的getState方法获取最新状态更新到视图中
+</script>
