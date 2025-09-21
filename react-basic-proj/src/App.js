@@ -67,10 +67,11 @@ function useToggle() {
   const toggle = () => setHookExample(!hookExample);
 
   // 哪些状态和回调函数需要再其他组件中使用 return
-  return {
-    hookExample,
-    toggle,
-  };
+  // return {
+  //   hookExample,
+  //   toggle,
+  // };
+  return [hookExample, toggle];
 }
 
 function App() {
@@ -227,14 +228,16 @@ function App() {
   // const [hookExample, setHookExample] = useState(true);
   // const toggle = () => setHookExample(!hookExample);
 
-  const { hookExample, toggle } = useToggle();
-  const { hookExample2, toggle2 } = useToggle();
+  // const { hookExample, toggle } = useToggle();
+  // const { hookExample: hookExample2, toggle: toggle2 } = useToggle();
+  const [hookExample1, toggle1] = useToggle();
+  const [hookExample2, toggle2] = useToggle();
 
   return (
     <div className="App">
-      {hookExample && <div>this is hook example</div>}
-      <button onClick={toggle}>
-        {hookExample ? "卸载" : "渲染"}hookExample组件
+      {hookExample1 && <div>this is hook example1</div>}
+      <button onClick={toggle1}>
+        {hookExample1 ? "卸载" : "渲染"}hookExample1组件
       </button>
 
       {hookExample2 && <div>this is hook example2222</div>}
