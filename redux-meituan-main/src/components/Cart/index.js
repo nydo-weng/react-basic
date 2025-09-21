@@ -1,50 +1,61 @@
-import classNames from 'classnames'
-import Count from '../Count'
-import './index.scss'
+import classNames from "classnames";
+import Count from "../Count";
+import "./index.scss";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
-  const cart = []
+  // 获取购物车列表 from store
+  const { cartList } = useSelector((state) => state.foods);
+
+  // 计算商品总数
+  const totalCount = cartList.reduce((acc, curr) => acc + curr.count, 0);
+
+  // 计算购物车总价
+  const totalPrice = cartList.reduce(
+    (acc, curr) => acc + curr.price * curr.count,
+    0
+  );
+
+  const cart = [];
   return (
     <div className="cartContainer">
       {/* 遮罩层 添加visible类名可以显示出来 */}
-      <div
-        className={classNames('cartOverlay')}
-      />
+      <div className={classNames("cartOverlay")} />
       <div className="cart">
         {/* fill 添加fill类名可以切换购物车状态*/}
         {/* 购物车数量 */}
-        <div className={classNames('icon')}>
-          {true && <div className="cartCornerMark">{0}</div>}
+        <div className={classNames("icon", { fill: cartList.length > 0 })}>
+          {cartList.length > 0 && (
+            <div className="cartCornerMark">{totalCount}</div>
+          )}
         </div>
         {/* 购物车价格 */}
         <div className="main">
           <div className="price">
             <span className="payableAmount">
               <span className="payableAmountUnit">¥</span>
-              {0.00}
+              {totalPrice.toFixed(2)}
             </span>
           </div>
           <span className="text">预估另需配送费 ¥5</span>
         </div>
         {/* 结算 or 起送 */}
-        {false ? (
+        {totalPrice > 20 ? (
           <div className="goToPreview">去结算</div>
         ) : (
           <div className="minFee">¥20起送</div>
         )}
       </div>
       {/* 添加visible类名 div会显示出来 */}
-      <div className={classNames('cartPanel')}>
+      <div className={classNames("cartPanel")}>
         <div className="header">
           <span className="text">购物车</span>
-          <span className="clearCart">
-            清空购物车
-          </span>
+          <span className="clearCart">清空购物车</span>
         </div>
 
         {/* 购物车列表 */}
         <div className="scrollArea">
-          {cart.map(item => {
+          {cart.map((item) => {
             return (
               <div className="cartItem" key={item.id}>
                 <img className="shopPic" src={item.picture} alt="" />
@@ -58,17 +69,15 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="skuBtnWrapper btnGroup">
-                  <Count
-                    count={item.count}
-                  />
+                  <Count count={item.count} />
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;
