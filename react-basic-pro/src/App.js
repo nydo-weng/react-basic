@@ -82,12 +82,8 @@ const tabs = [
   { type: "time", text: "最新" },
 ];
 
-const App = () => {
-  // 渲染评论列表
-  // const [commentList, setCommentList] = useState(
-  //   _.orderBy(defaultList, "like", "desc")
-  // );
-
+// 封装请求数据 的 hook
+function useGetList() {
   // 通过接口, 获取数据, 渲染评论列表
   const [commentList, setCommentList] = useState([]);
 
@@ -100,6 +96,33 @@ const App = () => {
     }
     getList();
   }, []);
+
+  return {
+    commentList,
+    setCommentList,
+  };
+}
+
+const App = () => {
+  // 渲染评论列表
+  // const [commentList, setCommentList] = useState(
+  //   _.orderBy(defaultList, "like", "desc")
+  // );
+
+  // 通过接口, 获取数据, 渲染评论列表
+  // const [commentList, setCommentList] = useState([]);
+
+  // useEffect(() => {
+  //   // 请求数据
+  //   async function getList() {
+  //     // axios 请求数据
+  //     const res = await axios.get("http://localhost:3004/list");
+  //     setCommentList(res.data);
+  //   }
+  //   getList();
+  // }, []);
+
+  const { commentList, setCommentList } = useGetList();
 
   const handleDelete = (rpid) => {
     setCommentList(commentList.filter((item) => item.rpid !== rpid));
