@@ -2,6 +2,12 @@ import classNames from "classnames";
 import Count from "../Count";
 import "./index.scss";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  increCount,
+  decreCount,
+  clearCart,
+} from "../../store/modules/takeaway";
 
 const Cart = () => {
   // 获取购物车列表 from store
@@ -15,6 +21,8 @@ const Cart = () => {
     (acc, curr) => acc + curr.price * curr.count,
     0
   );
+
+  const dispatch = useDispatch();
 
   const cart = [];
   return (
@@ -47,15 +55,17 @@ const Cart = () => {
         )}
       </div>
       {/* 添加visible类名 div会显示出来 */}
-      <div className={classNames("cartPanel")}>
+      <div className={classNames("cartPanel", "visible")}>
         <div className="header">
           <span className="text">购物车</span>
-          <span className="clearCart">清空购物车</span>
+          <span className="clearCart" onClick={() => dispatch(clearCart())}>
+            清空购物车
+          </span>
         </div>
 
         {/* 购物车列表 */}
         <div className="scrollArea">
-          {cart.map((item) => {
+          {cartList.map((item) => {
             return (
               <div className="cartItem" key={item.id}>
                 <img className="shopPic" src={item.picture} alt="" />
@@ -69,7 +79,12 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="skuBtnWrapper btnGroup">
-                  <Count count={item.count} />
+                  <Count
+                    count={item.count}
+                    // 这是一个注意点, 传入的 id 是字符串, 所以需要用 { id: item.id } 包裹, 作为一个对象传递
+                    onPlus={() => dispatch(increCount({ id: item.id }))}
+                    onMinus={() => dispatch(decreCount({ id: item.id }))}
+                  />
                 </div>
               </div>
             );
