@@ -8,6 +8,7 @@ import {
   decreCount,
   clearCart,
 } from "../../store/modules/takeaway";
+import { useState } from "react";
 
 const Cart = () => {
   // 获取购物车列表 from store
@@ -24,15 +25,28 @@ const Cart = () => {
 
   const dispatch = useDispatch();
 
-  const cart = [];
+  const [visible, setVisible] = useState(false);
+
+  const onShow = () => {
+    if (cartList.length > 0) {
+      setVisible(true);
+    }
+  };
+
   return (
     <div className="cartContainer">
       {/* 遮罩层 添加visible类名可以显示出来 */}
-      <div className={classNames("cartOverlay")} />
+      <div
+        className={classNames("cartOverlay", visible && "visible")}
+        onClick={() => setVisible(false)}
+      />
       <div className="cart">
         {/* fill 添加fill类名可以切换购物车状态*/}
         {/* 购物车数量 */}
-        <div className={classNames("icon", { fill: cartList.length > 0 })}>
+        <div
+          className={classNames("icon", { fill: cartList.length > 0 })}
+          onClick={onShow}
+        >
           {cartList.length > 0 && (
             <div className="cartCornerMark">{totalCount}</div>
           )}
@@ -55,10 +69,16 @@ const Cart = () => {
         )}
       </div>
       {/* 添加visible类名 div会显示出来 */}
-      <div className={classNames("cartPanel", "visible")}>
+      <div className={classNames("cartPanel", visible && "visible")}>
         <div className="header">
           <span className="text">购物车</span>
-          <span className="clearCart" onClick={() => dispatch(clearCart())}>
+          <span
+            className="clearCart"
+            onClick={() => {
+              dispatch(clearCart());
+              setVisible(false);
+            }}
+          >
             清空购物车
           </span>
         </div>
