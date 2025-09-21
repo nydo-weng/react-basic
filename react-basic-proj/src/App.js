@@ -42,6 +42,25 @@ function B() {
   return <div>this is B component: {bBlock.msg}</div>;
 }
 
+function Son() {
+  const [t, setT] = useState(0);
+  // 1. 在渲染时开启定时器
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setT((prevT) => {
+        console.log(`${prevT + 1}秒过去了`);
+        return prevT + 1;
+      });
+    }, 1000);
+
+    return () => {
+      // 清楚副作用
+      clearInterval(timer);
+    };
+  }, []);
+  return <div>this is son</div>;
+}
+
 function App() {
   /* JSX 简介
   这是一个典型的 JSX, JSX 是 JavaScript 和 XML(HTML) 的缩写, 表示在 JS 代码中编写 HTML 模版结构, 是 React 中编写 UI 模版的方式.
@@ -190,8 +209,14 @@ function App() {
     console.log("side effect");
   }, [count]);
 
+  // 通过条件渲染模拟组件卸载
+  const [show, setShow] = useState(true);
+
   return (
     <div className="App">
+      {show && <Son />}
+      <button onClick={() => setShow(!show)}>卸载son组件</button>
+
       <ul>
         {clist.map((item) => (
           <li key={item.id}>{item.name}</li>
