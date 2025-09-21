@@ -175,6 +175,21 @@ function App() {
     getList();
   }, []);
 
+  // 没有依赖项, 初始渲染 + 每次页面更新(重新渲染时)
+  // useEffect(() => {
+  //   console.log("side effect");
+  // });
+
+  // 空数组, 初始渲染执行一次
+  // useEffect(() => {
+  //   console.log("side effect");
+  // }, []);
+
+  // 传入特点依赖项, 初始渲染 + 依赖项发生变化
+  useEffect(() => {
+    console.log("side effect");
+  }, [count]);
+
   return (
     <div className="App">
       <ul>
