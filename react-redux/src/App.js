@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, addToNum } from "./store/modules/counterStore";
+import { fetchChannelList } from "./store/modules/channelStore";
+import { useEffect } from "react";
 
 function B() {
   const { count } = useSelector((state) => state.counter);
@@ -16,10 +18,23 @@ function A() {
 
 function App() {
   const { count } = useSelector((state) => state.counter);
+  const { channelList } = useSelector((state) => state.channel);
+
   const dispatch = useDispatch();
+
+  // 使用 useEffect 触发异步请求执行, 获取 channelList 数据
+  useEffect(() => {
+    dispatch(fetchChannelList());
+  }, [dispatch]);
 
   return (
     <div className="App" style={{ paddingTop: "100px" }}>
+      <ul>
+        {channelList.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+
       {count}
       <button onClick={() => dispatch(increment())}>+</button>
       <button onClick={() => dispatch(decrement())}>-</button>
