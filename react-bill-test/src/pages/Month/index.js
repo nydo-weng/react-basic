@@ -42,13 +42,22 @@ const Month = () => {
     return dayjs(new Date()).format("YYYY-MM");
   });
 
+  // 初始化当前月统计信息
+  useEffect(() => {
+    const nowDate = dayjs().format("YYYY-MM");
+    // 这里教程里也提到 undefined 问题了 边界控制是这么做的
+    if (monthGroup[nowDate]) {
+      setCurrentMonthList(monthGroup[nowDate]);
+    }
+    // setCurrentMonthList(monthGroup[nowDate] ?? []);
+  }, [monthGroup]); // 这里不要忘记把 monthGroup 作为依赖项给 useEffect
+
   // 确认回调, 拿到用户选择时间, 处理后得到 XXXX-XX
   const onConfirm = (date) => {
     setDateVisbile(false);
     const formatDate = dayjs(date).format("YYYY-MM");
     // monthGroup[formatDate] 可能不存在, 用空数组兜底
     setCurrentMonthList(monthGroup[formatDate] ?? []);
-    console.log("monthGroup", monthGroup, formatDate, monthGroup[formatDate]);
     setCurrentDate(formatDate);
   };
 
