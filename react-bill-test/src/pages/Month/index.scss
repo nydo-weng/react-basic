@@ -1,0 +1,82 @@
+.monthlyBill { // 整个页面的主容器
+  --ka-text-color: #191d26;  // 定义一个 CSS 变量，后面可以用 color: var(--ka-text-color)
+  height: 100%;  // 容器高度占满父元素
+  background: linear-gradient(180deg, #ffffff, #f5f5f5 100%); // 背景渐变色
+  background-size: 100% 100%; // 背景图片的尺寸
+  background-repeat: no-repeat; // 背景不重复
+  background-color: rgba(245, 245, 245, 0.9); // 背景颜色（半透明灰色）
+  color: var(--ka-text-color); // 默认文字颜色
+
+  .nav { // 顶部导航栏
+    --adm-font-size-10: 16px; // 定义导航栏字体大小变量
+    color: #121826; // 导航栏文字颜色
+    background-color: transparent; // 导航栏背景透明
+    .adm-nav-bar-back-arrow { // 返回箭头样式
+      font-size: 20px; // 箭头大小
+    }
+  }
+
+  .content { // 内容区域
+    height: 573px; // 固定高度
+    padding: 0 10px; // 左右内边距
+    overflow-y: scroll; // 垂直滚动
+    -ms-overflow-style: none; /* IE 隐藏滚动条 */
+    scrollbar-width: none; /* Firefox 隐藏滚动条 */
+    &::-webkit-scrollbar { // Chrome/Safari 隐藏滚动条
+      display: none;
+    }
+
+    > .header { // 内容区头部
+      height: 135px; // 高度
+      padding: 20px 20px 0px 18.5px; // 上右下左内边距
+      margin-bottom: 10px; // 下方间距
+      background-image: url(https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/reactbase/ka/month-bg.png); // 背景图片
+      background-size: 100% 100%; // 背景图片拉伸填满
+
+      .date { // 日期区域
+        display: flex; // 横向排列
+        align-items: center; // 垂直居中
+        margin-bottom: 25px; // 下方间距
+        font-size: 16px; // 字体大小
+
+        .arrow { // 日期旁边的小箭头
+          display: inline-block; // 行内块
+          width: 7px; // 宽度
+          height: 7px; // 高度
+          margin-top: -3px; // 上移
+          margin-left: 9px; // 左间距
+          border-top: 2px solid #121826; // 上边框
+          border-left: 2px solid #121826; // 左边框
+          transform: rotate(225deg); // 旋转箭头
+          transform-origin: center; // 旋转中心
+          transition: all 0.3s; // 动画过渡
+        }
+        .arrow.expand { // 展开状态的箭头
+          transform: translate(0, 2px) rotate(45deg); // 位置和角度变化
+        }
+      }
+    }
+  }
+  .twoLineOverview { // 两行概览区域
+    display: flex; // 横向排列
+    justify-content: space-between; // 两端对齐
+    width: 250px; // 固定宽度
+
+    .item { // 每个概览项
+      display: flex;
+      flex-direction: column; // 纵向排列
+
+      .money { // 金额
+        height: 24px;
+        line-height: 24px;
+        margin-bottom: 5px;
+        font-size: 18px;
+      }
+      .type { // 类型文字
+        height: 14px;
+        line-height: 14px;
+        font-size: 12px;
+      }
+    }
+  }
+}

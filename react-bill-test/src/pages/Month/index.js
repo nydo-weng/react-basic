@@ -1,5 +1,69 @@
+import { NavBar, DatePicker } from "antd-mobile";
+import { useEffect, useState } from "react";
+import "./index.scss";
+import classNames from "classnames";
+import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import { useMemo } from "react";
+import _ from "lodash";
+
 const Month = () => {
-  return <div>我是 二级路由 Month 组件</div>;
+  // 控制弹框的打开和关闭
+  const [dateVisible, setDateVisbile] = useState(false);
+
+  const onConfirm = () => {
+    setDateVisbile(false);
+  };
+
+  return (
+    <div className="monthlyBill">
+      <NavBar className="nav" backArrow={false}>
+        月度收支
+      </NavBar>
+      <div className="content">
+        <div className="header">
+          {/* 时间切换区域 */}
+          <div className="date" onClick={() => setDateVisbile(true)}>
+            <span className="text">2023 | 3月账单</span>
+            {/* expand 属性控制箭头的朝向  */}
+            <span
+              className={classNames("arrow", dateVisible && "expand")}
+            ></span>
+          </div>
+          {/* 统计区域 */}
+          <div className="twoLineOverview">
+            <div className="item">
+              <span className="money">{29}</span>
+              <span className="type">支出</span>
+            </div>
+            <div className="item">
+              <span className="money">{33}</span>
+              <span className="type">收入</span>
+            </div>
+            <div className="item">
+              <span className="money">{37}</span>
+              <span className="type">结余</span>
+            </div>
+          </div>
+          {/* 时间选择器 */}
+          <DatePicker
+            className="kaDate"
+            title="记账日期"
+            precision="month"
+            visible={dateVisible}
+            // 按取消
+            onCancel={() => setDateVisbile(false)}
+            // 按确定
+            onConfirm={onConfirm}
+            // 按蒙层
+            onClose={() => setDateVisbile(false)}
+            max={new Date()}
+          />
+        </div>
+        {/* 单日列表统计 */}
+      </div>
+    </div>
+  );
 };
 
 export default Month;

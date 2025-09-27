@@ -4,6 +4,9 @@
     top: 0;
     bottom: 50px;
     width: 100%;
+    // 消除
+    left: 0 !important;
+    right: auto !important;
   }
   .footer {
     position: fixed;
