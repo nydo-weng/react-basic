@@ -8,6 +8,16 @@ import { useMemo } from "react";
 import _ from "lodash";
 
 const Month = () => {
+  // 按月做数据的分组
+  const billList = useSelector((state) => state.bill.billList);
+  const monthGroup = useMemo(() => {
+    // 回调函数, return 出去计算之后的值
+    return _.groupBy(billList, (item) => dayjs(item.date).format("YYYY-MM"));
+  }, [billList]);
+  // 依赖项, 计算依赖于谁就放谁
+
+  console.log(monthGroup);
+
   // 控制弹框的打开和关闭
   const [dateVisible, setDateVisbile] = useState(false);
 
