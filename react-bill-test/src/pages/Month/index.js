@@ -11,8 +11,15 @@ const Month = () => {
   // 控制弹框的打开和关闭
   const [dateVisible, setDateVisbile] = useState(false);
 
-  const onConfirm = () => {
+  // 控制时间显示
+  const [currentDate, setCurrentDate] = useState(() => {
+    return dayjs(new Date()).format("YYYY-MM");
+  });
+
+  const onConfirm = (date) => {
     setDateVisbile(false);
+    const formatDate = dayjs(date).format("YYYY-MM");
+    setCurrentDate(formatDate);
   };
 
   return (
@@ -24,7 +31,7 @@ const Month = () => {
         <div className="header">
           {/* 时间切换区域 */}
           <div className="date" onClick={() => setDateVisbile(true)}>
-            <span className="text">2023 | 3月账单</span>
+            <span className="text">{currentDate + ""}月账单</span>
             {/* expand 属性控制箭头的朝向  */}
             <span
               className={classNames("arrow", dateVisible && "expand")}
@@ -53,7 +60,7 @@ const Month = () => {
             visible={dateVisible}
             // 按取消
             onCancel={() => setDateVisbile(false)}
-            // 按确定
+            // 按确定, 这个会返回一个 Date 对象
             onConfirm={onConfirm}
             // 按蒙层
             onClose={() => setDateVisbile(false)}
