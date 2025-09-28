@@ -10,11 +10,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log("form submitted: ", values);
     // 触发异步 action fetchLogin, 这里是 AJAX 的内容, 以后再深究
     await dispatch(fetchLogin(values));
     // 1. 跳转到首页
-    console.log("loged ", values);
     navigate("/");
     // 2. 提示一下用户
     message.success("登录成功");
