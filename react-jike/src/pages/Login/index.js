@@ -1,10 +1,23 @@
 import "./index.scss";
-import { Card, Form, Input, Button } from "antd";
+import { Card, Form, Input, Button, message } from "antd";
 import logo from "@/assets/logo.png";
+import { useDispatch } from "react-redux";
+import { fetchLogin } from "@/store/modules/user";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const onFinish = (values) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onFinish = async (values) => {
     console.log("form submitted: ", values);
+    // 触发异步 action fetchLogin, 这里是 AJAX 的内容, 以后再深究
+    await dispatch(fetchLogin(values));
+    // 1. 跳转到首页
+    console.log("loged ", values);
+    navigate("/");
+    // 2. 提示一下用户
+    message.success("登录成功");
   };
 
   return (
