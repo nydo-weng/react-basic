@@ -4,11 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getBillList } from "@/store/modules/billStore";
 import "./index.scss";
-import {
-  BillOutline,
-  CalculatorOutline,
-  AddCircleOutline,
-} from "antd-mobile-icons";
+import { BillOutline, CalculatorOutline, AddCircleOutline } from "antd-mobile-icons";
 
 const tabs = [
   {

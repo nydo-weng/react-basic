@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import _ from "lodash";
+import DailyBill from "./components/DayBill";
 
 const Month = () => {
   // 按月做数据的分组
@@ -17,6 +18,19 @@ const Month = () => {
     // 回调函数, return 出去计算之后的值
     return _.groupBy(billList, (item) => dayjs(item.date).format("YYYY-MM"));
   }, [billList]);
+  // 依赖项, 计算依赖于谁就放谁
+
+  // 当前月按照日分组
+  const dayGroup = useMemo(() => {
+    // 回调函数, return 出去计算之后的值
+    const groupData = _.groupBy(currentMonthList, (item) => dayjs(item.date).format("YYYY-MM-DD"));
+    const keys = Object.keys(groupData);
+
+    return {
+      groupData,
+      keys,
+    };
+  }, [currentMonthList]);
   // 依赖项, 计算依赖于谁就放谁
 
   const monthResult = useMemo(() => {
@@ -72,9 +86,7 @@ const Month = () => {
           <div className="date" onClick={() => setDateVisbile(true)}>
             <span className="text">{currentDate + ""}月账单</span>
             {/* expand 属性控制箭头的朝向  */}
-            <span
-              className={classNames("arrow", dateVisible && "expand")}
-            ></span>
+            <span className={classNames("arrow", dateVisible && "expand")}></span>
           </div>
           {/* 统计区域 */}
           <div className="twoLineOverview">
@@ -107,6 +119,9 @@ const Month = () => {
           />
         </div>
         {/* 单日列表统计 */}
+        {dayGroup.keys.map((key) => {
+          return <DailyBill key={key} date={key} billList={dayGroup.groupData[key]} />;
+        })}
       </div>
     </div>
   );
