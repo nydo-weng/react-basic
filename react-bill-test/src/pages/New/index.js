@@ -8,6 +8,7 @@ import { useState } from "react";
 import classNames from "classnames";
 import { addBillList } from "@/store/modules/billStore";
 import { useDispatch } from "react-redux";
+import dayjs from "dayjs";
 
 const New = () => {
   const navigate = useNavigate();
@@ -21,23 +22,37 @@ const New = () => {
     setMoney(value);
   };
 
+  // 存储选择的时间
+  const [date, setDate] = useState(new Date());
+
   // 收集账单类型
   const [useFor, setUseFor] = useState("");
 
   const dispatch = useDispatch();
   // 保存账单
   const saveBill = () => {
+    if (!useFor) {
+      alert("请选择账单类型");
+      return;
+    }
     // 收集表单数据
     const data = {
       type: billType,
       money: billType === "pay" ? -money : +money,
-      date: new Date(),
+      date: date,
       useFor: useFor,
     };
     // 点击保存, 提交 action
     dispatch(addBillList(data));
   };
+  // 控制时间打开关闭
+  const [dateVisible, setDateVisbile] = useState(false);
 
+  // 确认选择时间
+  const dateConfirm = (value) => {
+    setDate(value);
+    setDateVisbile(false);
+  };
   return (
     <div className="keepAccounts">
       <NavBar className="nav" onBack={() => navigate(-1)}>
@@ -64,11 +79,23 @@ const New = () => {
 
         <div className="kaFormWrapper">
           <div className="kaForm">
-            <div className="date">
+            <div className="date" onClick={() => setDateVisbile(true)}>
               <Icon type="calendar" className="icon" />
-              <span className="text">今天</span>
+              <span className="text">
+                {dayjs(date).format("YYYY-MM-DD") === dayjs(new Date()).format("YYYY-MM-DD")
+                  ? "今天"
+                  : dayjs(date).format("YYYY-MM-DD")}
+              </span>
               {/* 时间选择器 */}
-              <DatePicker className="kaDate" title="记账日期" max={new Date()} />
+              <DatePicker
+                className="kaDate"
+                title="记账日期"
+                max={new Date()}
+                visible={dateVisible}
+                onConfirm={dateConfirm}
+                onClose={() => setDateVisbile(false)}
+                onCancel={() => setDateVisbile(false)}
+              />
             </div>
             <div className="kaInput">
               <Input
