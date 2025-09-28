@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import "./index.scss";
 import { useMemo } from "react";
+import { billTypeToName } from "@/contants/index";
 
 // const DailyBill = ({date}) => {
 const DailyBill = (props) => {
@@ -40,6 +41,19 @@ const DailyBill = (props) => {
             <span className="type">结余</span>
           </div>
         </div>
+      </div>
+      {/* 单日列表 */}
+      <div className="billList">
+        {props.billList.map((item) => {
+          return (
+            <div className="bill" key={item.id}>
+              <div className="detail">
+                <div className="billType">{billTypeToName[item.useFor]}</div>
+                <div className={classNames("money", item.type)}>{item.money.toFixed(2)}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

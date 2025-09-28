@@ -112,6 +112,8 @@
       .detail {
         flex: 1;
         padding: 4px 0;
+        display: flex;
+        justify-content: space-between;
 
         .billType {
           display: flex;
