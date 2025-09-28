@@ -2,6 +2,7 @@ import classNames from "classnames";
 import "./index.scss";
 import { useMemo } from "react";
 import { billTypeToName } from "@/contants/index";
+import { useState } from "react";
 
 // const DailyBill = ({date}) => {
 const DailyBill = (props) => {
@@ -20,12 +21,15 @@ const DailyBill = (props) => {
     };
   }, [props.billList]);
 
+  // 控制展开和收起
+  const [visible, setVisible] = useState(false);
+
   return (
     <div className={classNames("dailyBill")}>
-      <div className="header">
+      <div className="header" onClick={() => setVisible(!visible)}>
         <div className="dateIcon">
           <span className="date">{props.date}</span>
-          <span className={classNames("arrow")}></span>
+          <span className={classNames("arrow", visible && "expand")}></span>
         </div>
         <div className="oneLineOverview">
           <div className="pay">
@@ -43,7 +47,7 @@ const DailyBill = (props) => {
         </div>
       </div>
       {/* 单日列表 */}
-      <div className="billList">
+      <div className="billList" style={{ display: visible ? "block" : "none" }}>
         {props.billList.map((item) => {
           return (
             <div className="bill" key={item.id}>
