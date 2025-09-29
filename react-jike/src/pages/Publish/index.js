@@ -7,7 +7,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 import { useEffect, useState } from "react";
-import { getChannelAPI } from "@/apis/article";
+import { getChannelAPI, createArticleAPI } from "@/apis/article";
 
 const { Option } = Select;
 
@@ -25,19 +25,39 @@ const Publish = () => {
     getChannelList();
   }, []);
 
+  const onFinish = (formValue) => {
+    const { title, content, channel_id } = formValue;
+
+    // 1. 按照接口文档, 处理收集到的表单数据
+    const reqData = {
+      title,
+      content,
+      cover: {
+        type: 0,
+        images: [],
+      },
+      channel_id,
+    };
+    // 2. 调用接口提交
+    createArticleAPI(reqData);
+  };
+
   return (
     <div className="publish">
       <Card
         title={
-          <Breadcrumb separator=">">
-            <Breadcrumb.Item>
-              <Link to="/home">首页</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>发布文章</Breadcrumb.Item>
-          </Breadcrumb>
+          <Breadcrumb
+            separator="/"
+            items={[{ title: <Link to="/">首页</Link> }, { title: "发布文章" }]}
+          />
         }
       >
-        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 1 }}>
+        <Form
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ type: 1 }}
+          onFinish={onFinish}
+        >
           <Form.Item
             label="标题"
             name="title"
