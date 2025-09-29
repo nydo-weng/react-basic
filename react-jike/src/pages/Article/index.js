@@ -17,13 +17,19 @@ const { RangePicker } = DatePicker;
 const Article = () => {
   const { channelList } = useChannel();
 
+  // 定义状态枚举
+  const status = {
+    1: <Tag color="warning">待审核</Tag>,
+    2: <Tag color="success">审核通过</Tag>,
+  };
+
   const columns = [
     {
       title: "封面",
       dataIndex: "cover",
       width: 120,
       render: (cover) => {
-        return <img src={cover || img404} width={80} height={60} alt="" />;
+        return <img src={cover.images[0] || img404} width={80} height={60} alt="" />;
       },
     },
     {
@@ -34,7 +40,11 @@ const Article = () => {
     {
       title: "状态",
       dataIndex: "status",
-      render: (data) => <Tag color="green">审核通过</Tag>,
+      // data - 后端返回的状态 status, 根据它做条件渲染
+      // data === 1 -> 待审核, data === 2 -> 审核通过
+      // render: (data) =>
+      //   data === 1 ? <Tag color="warning">待审核</Tag> : <Tag color="success">审核通过</Tag>,
+      render: (data) => status[data],
     },
     {
       title: "发布时间",
@@ -82,16 +92,48 @@ const Article = () => {
 
   const [count, setCount] = useState(0);
 
+  // 筛选功能
+  // 1. 准备参数
+  const [reqData, setReqData] = useState({
+    status: "",
+    channel_id: "",
+    begin_pubdate: "",
+    end_pubdate: "",
+    page: 1, // 当前页码 1
+    per_page: 4, // 当前页条数
+  });
+
   // 获取文章列表
   const [list, setList] = useState([]);
   useEffect(() => {
     async function getList() {
-      const res = await getArticleListAPI();
+      const res = await getArticleListAPI(reqData);
       setList(res.data.results);
       setCount(res.data.total_count);
     }
     getList();
-  }, []);
+  }, [reqData]);
+
+  // 2. 获取当前筛选数据
+  const onFinish = (formValue) => {
+    const [start, end] = formValue.date || [];
+    // 3. 把表单收集到的筛选数据放到参数中(不可变的方式)
+    setReqData({
+      ...reqData,
+      channel_id: formValue.channel_id,
+      status: formValue.status,
+      begin_pubdate: start?.format("YYYY-MM-DD") || "",
+      end_pubdate: end?.format("YYYY-MM-DD") || "",
+    });
+    // 4. 重新拉取文章列表 + 渲染 table, 这里逻辑是重复的 - 复用
+    // reqData 作为 useEffect 的依赖项, 依赖项发生变化, 重复执行内部操作
+  };
+
+  // 分页
+  const onPageChange = (page) => {
+    // 修改参数依赖项 引发数据的重新获取 列表渲染
+    setReqData({ ...reqData, page: page });
+  };
   return (
     <div>
       <Card
@@ -100,11 +142,11 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: null }}>
+        <Form initialValues={{ status: null }} onFinish={onFinish}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
               <Radio value={null}>全部</Radio>
-              <Radio value={0}>草稿</Radio>
+              <Radio value={1}>待审核</Radio>
               <Radio value={2}>审核通过</Radio>
             </Radio.Group>
           </Form.Item>
@@ -133,7 +175,12 @@ const Article = () => {
       </Card>
       {/* 表格区域 */}
       <Card title={`根据筛选条件共查询到 ${count} 条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={list} />
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={list}
+          pagination={{ total: count, pageSize: reqData.per_page, onChange: onPageChange }}
+        />
       </Card>
     </div>
   );
