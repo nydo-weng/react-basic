@@ -9,24 +9,16 @@ import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { getChannelAPI, createArticleAPI } from "@/apis/article";
 
+import { useChannel } from "@/hooks/useChannel";
+
 const { Option } = Select;
 
 const Publish = () => {
-  // 获取频道列表
-  const [channelList, setChannelList] = useState([]);
-
   // 控制封面类型 -1: 自动, 0:无图, 1: 1 张, 3: 3 张
   const [coverType, setCoverType] = useState(1);
 
-  useEffect(() => {
-    // 1. 封装函数, 在函数体内调用接口
-    const getChannelList = async () => {
-      const res = await getChannelAPI();
-      setChannelList(res.data.channels);
-    };
-    // 2. 调用函数
-    getChannelList();
-  }, []);
+  // 获取频道列表
+  const { channelList } = useChannel();
 
   const onFinish = (formValue) => {
     const { title, content, channel_id } = formValue;
