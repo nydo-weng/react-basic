@@ -3,7 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { request } from "@/utils";
-import { setToken as _setToken, getToken } from "@/utils";
+import { setToken as _setToken, getToken, removeToken } from "@/utils";
 
 const userStore = createSlice({
   name: "user",
@@ -22,11 +22,16 @@ const userStore = createSlice({
     setUserInfo(state, action) {
       state.userInfo = action.payload;
     },
+    clearUserInfo(state) {
+      state.token = "";
+      state.userInfo = {};
+      removeToken();
+    },
   },
 });
 
 // 解构出 actionCreater
-const { setToken, setUserInfo } = userStore.actions;
+const { setToken, setUserInfo, clearUserInfo } = userStore.actions;
 
 // 异步方法 完成登录 获取 token
 const fetchLogin = (loginForm) => {
@@ -47,7 +52,7 @@ const fetchUserInfo = () => {
 };
 
 // export { setToken, fetchLogin, fetchUserInfo };
-export { fetchLogin, fetchUserInfo };
+export { fetchLogin, fetchUserInfo, clearUserInfo };
 
 // 获取 reducer 函数
 const userReducer = userStore.reducer;
