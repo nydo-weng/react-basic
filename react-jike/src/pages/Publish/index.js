@@ -7,7 +7,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 import { useEffect, useState } from "react";
-import { createArticleAPI, getArticleByIdAPI } from "@/apis/article";
+import { createArticleAPI, getArticleByIdAPI, updateArticleAPI } from "@/apis/article";
 
 import { useChannel } from "@/hooks/useChannel";
 
@@ -31,18 +31,33 @@ const Publish = () => {
       content,
       cover: {
         type: coverType, // 封面类型
-        images: imageList.map((item) => item.response.data.url), // 图片列表
+        // 这里的 url 处理逻辑只是在新增时候的逻辑
+        // 在编辑的时候也需要处理
+        images: imageList.map((item) => {
+          if (item.response) {
+            return item.response.data.url;
+          } else {
+            return item.url;
+          }
+        }), // 图片列表
       },
       channel_id,
     };
     // 2. 调用接口提交
-    createArticleAPI(reqData);
+    // 处理调用不同的接口
+    if (articleId) {
+      // updateArticleAPI(reqData, articleId);
+      // 或者展开, 加到 data 里
+      updateArticleAPI({ ...reqData, id: articleId });
+    } else {
+      createArticleAPI(reqData);
+    }
   };
 
   const [imageList, setImageList] = useState([]);
   // 上传回调
   const onChange = (value) => {
-    console.log("正在上传", value.fileList);
+    // console.log("正在上传", value.fileList);
     setImageList(value.fileList);
   };
 
@@ -56,7 +71,7 @@ const Publish = () => {
   const articleId = searchParams.get("id");
   // 获取实例
   const [form] = Form.useForm();
-  console.log(articleId);
+  // console.log(articleId);
   useEffect(() => {
     // 1. 通过 id 获取数据
     async function getArticleDetail() {

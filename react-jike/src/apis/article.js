@@ -43,3 +43,17 @@ export function getArticleByIdAPI(id) {
     method: "GET",
   });
 }
+
+// 6. 编辑接口, 新增文章
+// export function updateArticleAPI(data, articleId) {
+// 或者写成
+export function updateArticleAPI(data) {
+  return request({
+    // url: `/mp/articles/${articleId}?draft=false`,
+    // 或者写成
+    url: `/mp/articles/${data.id}?draft=false`,
+    method: "PUT",
+    // body 参数
+    data,
+  });
+}
