@@ -15,6 +15,9 @@ const Publish = () => {
   // 获取频道列表
   const [channelList, setChannelList] = useState([]);
 
+  // 控制封面类型 -1: 自动, 0:无图, 1: 1 张, 3: 3 张
+  const [coverType, setCoverType] = useState(1);
+
   useEffect(() => {
     // 1. 封装函数, 在函数体内调用接口
     const getChannelList = async () => {
@@ -48,6 +51,11 @@ const Publish = () => {
     console.log("正在上传", value.fileList);
     setImageList(value.fileList);
   };
+
+  // 切换图片封面类型
+  const onTypeChange = (e) => {
+    setCoverType(e.target.value);
+  };
   return (
     <div className="publish">
       <Card
@@ -61,7 +69,7 @@ const Publish = () => {
         <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ type: 1 }}
+          initialValues={{ type: coverType }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -86,9 +94,8 @@ const Publish = () => {
             </Select>
           </Form.Item>
           <Form.Item label="封面">
-            .
             <Form.Item name="type">
-              <Radio.Group>
+              <Radio.Group onChange={onTypeChange}>
                 <Radio value={1}>单图</Radio>
                 <Radio value={3}>三图</Radio>
                 <Radio value={0}>无图</Radio>
@@ -98,17 +105,19 @@ const Publish = () => {
             listType: 决定选择文件筐的外观样式
             showUploadList: 控制显示上传列表
             */}
-            <Upload
-              listType="picture-card"
-              showUploadList
-              action={"http://geek.itheima.net/v1_0/upload"}
-              name="image"
-              onChange={onChange}
-            >
-              <div style={{ marginTop: 8 }}>
-                <PlusOutlined />
-              </div>
-            </Upload>
+            {coverType > 0 && (
+              <Upload
+                listType="picture-card"
+                showUploadList
+                action={"http://geek.itheima.net/v1_0/upload"}
+                name="image"
+                onChange={onChange}
+              >
+                <div style={{ marginTop: 8 }}>
+                  <PlusOutlined />
+                </div>
+              </Upload>
+            )}
           </Form.Item>
           <Form.Item
             label="内容"
