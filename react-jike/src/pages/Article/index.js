@@ -8,6 +8,9 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import img404 from "@/assets/error.png";
 import { useChannel } from "@/hooks/useChannel";
 
+import { useState, useEffect } from "react";
+import { getArticleListAPI } from "@/apis/article";
+
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
@@ -76,6 +79,19 @@ const Article = () => {
       title: "wkwebview离线化加载h5资源解决方案",
     },
   ];
+
+  const [count, setCount] = useState(0);
+
+  // 获取文章列表
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    async function getList() {
+      const res = await getArticleListAPI();
+      setList(res.data.results);
+      setCount(res.data.total_count);
+    }
+    getList();
+  }, []);
   return (
     <div>
       <Card
@@ -116,8 +132,8 @@ const Article = () => {
         </Form>
       </Card>
       {/* 表格区域 */}
-      <Card title={`根据筛选条件共查询到 count 条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={data} />
+      <Card title={`根据筛选条件共查询到 ${count} 条结果：`}>
+        <Table rowKey="id" columns={columns} dataSource={list} />
       </Card>
     </div>
   );
