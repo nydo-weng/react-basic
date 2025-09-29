@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select } from "antd";
+import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select, Popconfirm } from "antd";
 // 引入汉化包, 时间选择器显示中文
 import locale from "antd/es/date-picker/locale/zh_CN";
 
@@ -9,7 +9,7 @@ import img404 from "@/assets/error.png";
 import { useChannel } from "@/hooks/useChannel";
 
 import { useState, useEffect } from "react";
-import { getArticleListAPI } from "@/apis/article";
+import { getArticleListAPI, delArticleAPI } from "@/apis/article";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -64,11 +64,20 @@ const Article = () => {
     },
     {
       title: "操作",
+      // 这里还有一个 data 用来传递是表格中的哪一个实例执行了操作
       render: (data) => {
         return (
           <Space size="middle">
             <Button type="primary" shape="circle" icon={<EditOutlined />} />
-            <Button type="primary" danger shape="circle" icon={<DeleteOutlined />} />
+            <Popconfirm
+              title="删除文章"
+              description="确认要删除当前文章吗?"
+              onConfirm={() => onConfirm(data)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="primary" danger shape="circle" icon={<DeleteOutlined />} />
+            </Popconfirm>
           </Space>
         );
       },
@@ -134,6 +143,13 @@ const Article = () => {
     // 修改参数依赖项 引发数据的重新获取 列表渲染
     setReqData({ ...reqData, page: page });
   };
+
+  // 删除, 因为删除是一个异步的请求, 重新渲染希望发生在删除之后, 所以要 await
+  const onConfirm = async (data) => {
+    await delArticleAPI(data.id);
+    setReqData({ ...reqData });
+  };
+
   return (
     <div>
       <Card
