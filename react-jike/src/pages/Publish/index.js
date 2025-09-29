@@ -1,4 +1,4 @@
-import { Card, Breadcrumb, Form, Button, Radio, Input, Upload, Space, Select } from "antd";
+import { Card, Breadcrumb, Form, Button, Radio, Input, Upload, Space, Select, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./index.scss";
@@ -30,14 +30,16 @@ const Publish = () => {
 
   const onFinish = (formValue) => {
     const { title, content, channel_id } = formValue;
+    // 校验封面类型 imageType 是否和实际的图片列表 imageList 数量是相等的
+    if (imageList.length !== coverType) return message.warning("封面类型和图片数量不匹配");
 
     // 1. 按照接口文档, 处理收集到的表单数据
     const reqData = {
       title,
       content,
       cover: {
-        type: 0,
-        images: [],
+        type: coverType, // 封面类型
+        images: imageList.map((item) => item.response.data.url), // 图片列表
       },
       channel_id,
     };
