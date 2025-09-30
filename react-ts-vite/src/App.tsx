@@ -58,9 +58,27 @@ function App() {
     });
   };
 
+  // 1. 限制 useState 函数参数的初始值可以是 User | null
+  // 2. 限制 setUser 函数的参数类型可以是 User| null
+  const [nuser, setNUser] = useState<User | null>({
+    name: "nnn",
+    age: 26,
+  });
+
+  const changeNUser = () => {
+    // setNUser({
+    //   name: "jack",
+    //   age: 18,
+    // });
+    setNUser(null);
+  };
+
   return (
     <>
-      this is app. {value}, {list}, {user.name}
+      {/* 为了类型安全, 针对 既可以是 user 又可以是 null 的联合类型, 通过可选链, 做类型守卫*/}
+      {/* 只有当 nuser 不为 null 不为空值时, 才进行点运算 */}
+      <button onClick={changeNUser}>清空 nnn</button>
+      this is app. {value}, {list}, {user.name}, {nuser?.name}
     </>
   );
 }
