@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // useState 根据初始值做自动推断
 // 场景: 明确的初始值
@@ -87,6 +87,24 @@ function App() {
     setNUser(null);
   };
 
+  // 1. 获取 dom
+  const domRef = useRef<HTMLInputElement>(null);
+
+  // 2. 稳定引用的存储器 比如 定时器管理
+  const timerId = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    // 可选链 前面不为空值 (null / undefined) 才执行点运算
+    // 类型守卫 防止出现空值点运算
+    domRef.current?.focus();
+
+    timerId.current = setInterval(() => {
+      console.log("123");
+    }, 1000);
+
+    return () => clearInterval(timerId.current);
+  }, []);
+
   return (
     <>
       {/* 为了类型安全, 针对 既可以是 user 又可以是 null 的联合类型, 通过可选链, 做类型守卫*/}
@@ -94,6 +112,7 @@ function App() {
       <button onClick={changeNUser}>清空 nnn</button>
       this is app. {value}, {list}, {user.name}, {nuser?.name}
       <Button className="test" />
+      <input ref={domRef} />
     </>
   );
 }
