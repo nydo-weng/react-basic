@@ -8,6 +8,20 @@ type User = {
   age: number;
 };
 
+// type Props = {
+//   className: string;
+// };
+
+interface Props {
+  className: string; // 必填属性
+  title?: string; // 可选属性
+}
+
+function Button(props: Props) {
+  const { className } = props;
+  return <button>click me</button>;
+}
+
 function App() {
   const [value, toggle] = useState(false);
 
@@ -79,6 +93,7 @@ function App() {
       {/* 只有当 nuser 不为 null 不为空值时, 才进行点运算 */}
       <button onClick={changeNUser}>清空 nnn</button>
       this is app. {value}, {list}, {user.name}, {nuser?.name}
+      <Button className="test" />
     </>
   );
 }
