@@ -3,6 +3,7 @@ import HookReducer from "./HookReducer";
 import HookMemo from "./HookMemo";
 import ReactMemo from "./ReactMemo";
 import ReactMemoProps from "./ReactMemoProps";
+import HookCallback from "./HookCallback";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       {/* <HookReducer /> */}
       {/* <HookMemo /> */}
       {/* <ReactMemo></ReactMemo> */}
-      <ReactMemoProps />
+      {/* <ReactMemoProps /> */}
+      <HookCallback />
     </div>
   );
 }
