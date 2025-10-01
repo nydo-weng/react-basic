@@ -3,6 +3,7 @@ import { Image, InfiniteScroll, List } from "antd-mobile";
 import { users } from "./users";
 import { useEffect, useState } from "react";
 import { fetchListAPI, type ListRes } from "@/apis/list";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   channelId: string;
@@ -60,11 +61,18 @@ const HomeList = (props: Props) => {
     }
   };
 
+  const navigate = useNavigate();
+  const goToDetail = (id: string) => {
+    // 路由跳转
+    navigate(`/detail?id=${id}`);
+  };
+
   return (
     <>
       <List>
         {listRes.results.map((item) => (
           <List.Item
+            onClick={() => goToDetail(item.art_id)}
             key={item.art_id}
             prefix={
               <Image
