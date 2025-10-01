@@ -1,6 +1,5 @@
 import { Image, InfiniteScroll, List } from "antd-mobile";
 // mock 数据
-import { users } from "./users";
 import { useEffect, useState } from "react";
 import { fetchListAPI, type ListRes } from "@/apis/list";
 import { useNavigate } from "react-router-dom";
